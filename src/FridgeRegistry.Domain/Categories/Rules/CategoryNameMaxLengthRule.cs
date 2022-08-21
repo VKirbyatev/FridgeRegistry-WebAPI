@@ -4,17 +4,17 @@ namespace FridgeRegistry.Domain.Categories.Rules;
 
 public class CategoryNameMaxLengthRule : IBusinessRule
 {
-    private string Name { get; }
+    private readonly string _name;
     private const byte NameMaxLength = 100;
     
     public CategoryNameMaxLengthRule(string name)
     {
-        Name = name;
+        _name = name;
     }
     
     public bool IsBroken()
     {
-        return Name.Length > NameMaxLength;
+        return _name.Length > NameMaxLength;
     }
 
     public string Message => $"The Category Name's length must not exceed {NameMaxLength} characters";

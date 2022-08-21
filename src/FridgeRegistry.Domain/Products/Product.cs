@@ -7,12 +7,11 @@ namespace FridgeRegistry.Domain.Products;
 public class Product : Entity
 {
     public Guid Id { get; private set; }
-    
+
     public string Name { get; private set; }
     public string Description { get; private set; }
     
     public ShelfLife ShelfLife { get; private set; }
-    public List<Category> Categories { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
     public DateTime ModifiedAt { get; private set; }
@@ -33,9 +32,8 @@ public class Product : Entity
         Description = description;
 
         ShelfLife = new ShelfLife(shelfLife);
-        Categories = new List<Category>();
-        
-        CreatedAt = DateTime.Now;
-        ModifiedAt = DateTime.Now;
+
+        CreatedAt = DateTime.UtcNow;
+        ModifiedAt = DateTime.UtcNow;
     }
 }
