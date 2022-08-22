@@ -1,6 +1,8 @@
 using System.Net;
 using System.Text.Json;
+using FluentValidation;
 using FridgeRegistry.Application.Common.Exceptions;
+using FridgeRegistry.Domain.Common.Exceptions;
 
 namespace FridgeRegistry.WebAPI.Middlewares.Exceptions;
 
@@ -34,6 +36,13 @@ public class ExceptionHandlerMiddleware
         {
             case NotFoundException:
                 code = HttpStatusCode.NotFound;
+                break;
+            case ValidationException validationException:
+                code = HttpStatusCode.BadRequest;
+                message = JsonSerializer.Serialize(validationException.Errors);
+                break;
+            case BusinessRuleValidationException:
+                code = HttpStatusCode.BadRequest;
                 break;
         }
 
