@@ -1,4 +1,5 @@
 using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Infrastructure.Mapping;
 using FridgeRegistry.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +9,7 @@ namespace FridgeRegistry.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DbConnection");
         services.AddDbContext<FridgeRegistryDbContext>(options =>
@@ -16,6 +17,10 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString, builder => builder.MigrationsAssembly("FridgeRegistry.WebAPI"));
         });
         services.AddScoped<IDbContext>(provider => provider.GetService<FridgeRegistryDbContext>());
+        services.AddAutoMapper(options =>
+        {
+            options.AddProfile(new DomainToDtoProfile());
+        });
 
         return services;
     }

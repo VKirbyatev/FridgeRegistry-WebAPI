@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FridgeRegistry.Application.Categories.Queries.GetCategoryList;
 
-public class GetCategoryListQuery : IRequest<CategoryListDto>
+public class GetCategoryListQuery : IRequest<ICollection<CategoryLookupDto>>
 {
     
 }

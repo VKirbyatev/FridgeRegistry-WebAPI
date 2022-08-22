@@ -13,7 +13,7 @@ namespace FridgeRegistry.WebAPI.Controllers;
 public class CategoryController : BaseController
 {
     [HttpGet]
-    public async Task<ActionResult<CategoryListDto>> GetList()
+    public async Task<ActionResult<ICollection<CategoryLookupDto>>> GetList()
     {
         var query = new GetCategoryListQuery();
 
