@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FridgeRegistry.WebAPI.Migrations
+namespace FridgeRegistry.Infrastructure.Migrations
 {
     public partial class InitialCreate : Migration
     {

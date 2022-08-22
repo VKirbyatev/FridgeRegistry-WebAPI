@@ -14,7 +14,7 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("DbConnection");
         services.AddDbContext<FridgeRegistryDbContext>(options =>
         {
-            options.UseNpgsql(connectionString, builder => builder.MigrationsAssembly("FridgeRegistry.WebAPI"));
+            options.UseNpgsql(connectionString, builder => builder.MigrationsAssembly("FridgeRegistry.Infrastructure"));
         });
         services.AddScoped<IDbContext>(provider => provider.GetService<FridgeRegistryDbContext>());
         services.AddAutoMapper(options =>
