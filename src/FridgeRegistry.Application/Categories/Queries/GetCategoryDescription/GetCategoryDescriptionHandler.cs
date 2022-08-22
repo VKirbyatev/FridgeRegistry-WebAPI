@@ -28,6 +28,11 @@ public class GetCategoryDescriptionHandler : IRequestHandler<GetCategoryDescript
             .SingleOrDefaultAsync(
                 category => category.Id == request.CategoryId, cancellationToken
             );
+
+        if (category == null)
+        {
+            throw new NotFoundException(nameof(Category), request.CategoryId);
+        }
         
         return _mapper.Map<CategoryDescriptionDto>(category);
     }

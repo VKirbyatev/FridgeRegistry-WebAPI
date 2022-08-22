@@ -1,5 +1,6 @@
 using FridgeRegistry.Application;
 using FridgeRegistry.Infrastructure;
+using FridgeRegistry.WebAPI.Middlewares.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +20,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseCustomExceptionHandler();
+
 app.UseSwagger();
 app.UseSwaggerUI();
+
 app.UseRouting();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
