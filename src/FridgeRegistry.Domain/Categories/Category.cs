@@ -1,7 +1,6 @@
 using FridgeRegistry.Domain.Categories.Rules;
 using FridgeRegistry.Domain.Common;
 using FridgeRegistry.Domain.Products;
-using Microsoft.EntityFrameworkCore;
 
 namespace FridgeRegistry.Domain.Categories;
 
@@ -12,10 +11,10 @@ public class Category : Entity
     
     public Category? Parent { get; private set; }
     
-    private readonly List<Category> _children;
+    private readonly List<Category> _children = new List<Category>();
     public IReadOnlyCollection<Category> Children => _children;
 
-    private readonly List<Product> _products;
+    private readonly List<Product> _products = new List<Product>();
     public IReadOnlyCollection<Product> Products => _products;
 
     public DateTime CreatedAt { get; private set; }
@@ -37,11 +36,21 @@ public class Category : Entity
         ModifiedAt = DateTime.UtcNow;
     }
 
+    public void SetName(string name)
+    {
+        CheckRule(new CategoryNameMaxLengthRule(name));
+        
+        Name = name;
+        
+        ModifiedAt = DateTime.UtcNow;
+    }
+
     public void SetParent(Category parent)
     {
         CheckRule(new NotSameParentAndChildRule(parent, this));
         
         RemoveParent();
+
         Parent = parent;
         parent._children.Add(this);
         

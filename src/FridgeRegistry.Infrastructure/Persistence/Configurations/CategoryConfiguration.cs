@@ -13,6 +13,23 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 
         builder
             .HasOne(category => category.Parent)
-            .WithMany(category => category.Children);
+            .WithMany(category => category.Children)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder
+            .HasMany(category => category.Products)
+            .WithOne()
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .Metadata
+            .FindNavigation("Children")
+            ?.SetPropertyAccessMode(PropertyAccessMode.Field);
+        
+        builder
+            .Metadata
+            .FindNavigation("Products")
+            ?.SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }
