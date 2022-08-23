@@ -25,10 +25,21 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
         {
             throw new NotFoundException(nameof(Product), request.ProductId);
         }
+
+        if (request.Name != null)
+        {
+            product.SetName(request.Name);    
+        }
         
-        product.SetName(request.Name);
-        product.SetDescription(request.Description);
-        product.SetShelfLife(request.ShelfLife);
+        if (request.Description != null)
+        {
+            product.SetDescription(request.Description);    
+        }
+        
+        if (request.ShelfLife != null)
+        {
+            product.SetShelfLife(request.ShelfLife);    
+        }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
         return Unit.Value;

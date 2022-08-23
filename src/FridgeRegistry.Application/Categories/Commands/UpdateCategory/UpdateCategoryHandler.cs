@@ -39,8 +39,12 @@ public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand>
 
             category.SetParent(parentCategory);
         }
+
+        if (request.Name != null)
+        {
+            category.SetName(request.Name);    
+        }
         
-        category.SetName(request.Name);
         await _context.SaveChangesAsync(cancellationToken);
         
         return Unit.Value;

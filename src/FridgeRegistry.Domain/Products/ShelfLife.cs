@@ -23,7 +23,7 @@ public class ShelfLife : ValueObject
 
     public override string ToString()
     {
-        var timespan = DateTime.UtcNow.AddMilliseconds(LifeTime) - DateTime.UtcNow;
+        var timespan = TimeSpan.FromMilliseconds(LifeTime);
         return timespan.ToString(@"hh\:mm\:ss");
     }
 

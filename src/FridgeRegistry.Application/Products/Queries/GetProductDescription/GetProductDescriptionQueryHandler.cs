@@ -21,7 +21,9 @@ public class GetProductDescriptionQueryHandler : IRequestHandler<GetProductDescr
 
     public async Task<ProductDescriptionDto> Handle(GetProductDescriptionQuery request, CancellationToken cancellationToken)
     {
-        var product = await _dbContext.Products.FirstOrDefaultAsync(
+        var product = await _dbContext.Products
+            .Include(product => product.Category)
+            .SingleOrDefaultAsync(
             x => x.Id == request.ProductId, cancellationToken
         );
 
