@@ -10,6 +10,7 @@ using FridgeRegistry.Application.DTO.Products;
 using FridgeRegistry.WebAPI.Common.Constants;
 using FridgeRegistry.WebAPI.Contracts;
 using FridgeRegistry.WebAPI.Contracts.Requests.Category;
+using FridgeRegistry.WebAPI.Contracts.Requests.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,20 +19,30 @@ namespace FridgeRegistry.WebAPI.Controllers.V1;
 public class CategoryController : BaseController
 {
     [HttpGet(ApiRoutes.Category.GetList)]
-    public async Task<ActionResult<ICollection<CategoryLookupDto>>> GetList()
+    public async Task<ActionResult<ICollection<CategoryLookupDto>>> GetList([FromQuery] PagingRequest request)
     {
-        var query = new GetCategoryListQuery();
+        var query = new GetCategoryListQuery()
+        {
+            SearchString = request.SearchString,
+            
+            Take = request.Take,
+            Skip = request.Skip,
+        };
 
         var dto = await Mediator.Send(query);
         return Ok(dto);
     }
     
     [HttpGet(ApiRoutes.Category.GetProducts)]
-    public async Task<ActionResult<ICollection<ProductLookupDto>>> GetProducts(Guid id)
+    public async Task<ActionResult<ICollection<ProductLookupDto>>> GetProducts(Guid id, PagingRequest request)
     {
         var query = new GetCategoryProductsListQuery()
         {
             CategoryId = id,
+            
+            SearchString = request.SearchString,
+            Take = request.Take,
+            Skip = request.Skip,
         };
 
         var dto = await Mediator.Send(query);

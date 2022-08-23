@@ -6,6 +6,7 @@ using FridgeRegistry.Application.Products.Queries.GetProductDescription;
 using FridgeRegistry.Application.Products.Queries.GetProductsList;
 using FridgeRegistry.WebAPI.Common.Constants;
 using FridgeRegistry.WebAPI.Contracts;
+using FridgeRegistry.WebAPI.Contracts.Requests.Common;
 using FridgeRegistry.WebAPI.Contracts.Requests.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +16,15 @@ namespace FridgeRegistry.WebAPI.Controllers.V1;
 public class ProductController : BaseController
 {
     [HttpGet(ApiRoutes.Product.GetList)]
-    public async Task<ActionResult<ICollection<ProductLookupDto>>> GetList()
+    public async Task<ActionResult<ICollection<ProductLookupDto>>> GetList([FromQuery] PagingRequest request)
     {
-        var query = new GetProductsListQuery();
+        var query = new GetProductsListQuery()
+        {
+            SearchString = request.SearchString,
+            
+            Take = request.Take,
+            Skip = request.Skip,
+        };
 
         var dto = await Mediator.Send(query);
         return Ok(dto);

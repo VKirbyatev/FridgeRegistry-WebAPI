@@ -1,9 +1,8 @@
+using FridgeRegistry.Application.Common.Query;
 using FridgeRegistry.Application.DTO.Categories;
+using FridgeRegistry.Application.DTO.Common;
 using MediatR;
 
 namespace FridgeRegistry.Application.Categories.Queries.GetCategoryList;
 
-public class GetCategoryListQuery : IRequest<ICollection<CategoryLookupDto>>
-{
-    
-}
+public class GetCategoryListQuery : PagingQuery, IRequest<PagedListDto<CategoryLookupDto>> {}

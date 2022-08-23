@@ -1,5 +1,7 @@
 using AutoMapper;
 using FridgeRegistry.Application.Common.Exceptions;
+using FridgeRegistry.Application.DTO.Categories;
+using FridgeRegistry.Application.DTO.Common;
 using FridgeRegistry.Application.DTO.Products;
 using FridgeRegistry.Application.Interfaces;
 using FridgeRegistry.Domain.Categories;
@@ -9,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FridgeRegistry.Application.Categories.Queries.GetCategoryProductsList;
 
-public class GetCategoryProductsListQueryHandler : IRequestHandler<GetCategoryProductsListQuery, ICollection<ProductLookupDto>>
+public class GetCategoryProductsListQueryHandler : IRequestHandler<GetCategoryProductsListQuery, PagedListDto<ProductLookupDto>>
 {
     private readonly IDbContext _dbContext;
     private readonly IMapper _mapper; 
@@ -20,7 +22,7 @@ public class GetCategoryProductsListQueryHandler : IRequestHandler<GetCategoryPr
         _mapper = mapper;
     }
 
-    public async Task<ICollection<ProductLookupDto>> Handle(GetCategoryProductsListQuery request, CancellationToken cancellationToken)
+    public async Task<PagedListDto<ProductLookupDto>> Handle(GetCategoryProductsListQuery request, CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories.SingleOrDefaultAsync(
             category => category.Id == request.CategoryId, cancellationToken
@@ -31,9 +33,23 @@ public class GetCategoryProductsListQueryHandler : IRequestHandler<GetCategoryPr
             throw new NotFoundException(nameof(Category), request.CategoryId);
         }
 
-        var products = await GetCategoryProducts(category);
+        var totalProducts = await GetCategoryProducts(category);
+        
+        var searchString = request.SearchString ?? string.Empty;
+        var totalProductsCount = totalProducts.Count(x => x.Name.ToLower().Contains(searchString.ToLower()));
+        var totalPages = (totalProductsCount + request.Take - 1) / request.Take;
+        
+        var pagedProducts = totalProducts
+            .Where(x => x.Name.ToLower().Contains(searchString.ToLower()))
+            .Skip(request.Skip)
+            .Take(request.Take);
+        
 
-        return _mapper.Map<ICollection<ProductLookupDto>>(products);
+        return new PagedListDto<ProductLookupDto>()
+        {
+            TotalPages = totalPages,
+            Items = _mapper.Map<ICollection<ProductLookupDto>>(pagedProducts)
+        };
     }
 
     private async Task<IEnumerable<Product>> GetCategoryProducts(Category category)
