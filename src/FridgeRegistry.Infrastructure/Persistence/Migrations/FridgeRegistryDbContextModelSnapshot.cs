@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FridgeRegistry.Infrastructure.Migrations
+namespace FridgeRegistry.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(FridgeRegistryDbContext))]
     partial class FridgeRegistryDbContextModelSnapshot : ModelSnapshot

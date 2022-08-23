@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FridgeRegistry.Infrastructure.Migrations
+namespace FridgeRegistry.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(FridgeRegistryDbContext))]
-    [Migration("20220822111220_InitialCreate")]
+    [Migration("20220823095650_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

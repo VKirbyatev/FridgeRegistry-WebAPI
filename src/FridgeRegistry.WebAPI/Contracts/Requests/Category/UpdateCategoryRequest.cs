@@ -1,4 +1,4 @@
-namespace FridgeRegistry.WebAPI.Requests.Category;
+namespace FridgeRegistry.WebAPI.Contracts.Requests.Category;
 
 public class UpdateCategoryRequest
 {

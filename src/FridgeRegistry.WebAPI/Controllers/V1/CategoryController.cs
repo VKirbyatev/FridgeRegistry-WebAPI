@@ -4,15 +4,17 @@ using FridgeRegistry.Application.Categories.Commands.UpdateCategory;
 using FridgeRegistry.Application.Categories.Queries.GetCategoryDescription;
 using FridgeRegistry.Application.Categories.Queries.GetCategoryList;
 using FridgeRegistry.Application.DTO.Categories;
-using FridgeRegistry.WebAPI.Requests.Category;
+using FridgeRegistry.WebAPI.Common.Constants;
+using FridgeRegistry.WebAPI.Contracts;
+using FridgeRegistry.WebAPI.Contracts.Requests.Category;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FridgeRegistry.WebAPI.Controllers;
+namespace FridgeRegistry.WebAPI.Controllers.V1;
 
-[Route("api/[controller]")]
 public class CategoryController : BaseController
 {
-    [HttpGet]
+    [HttpGet(ApiRoutes.Category.GetList)]
     public async Task<ActionResult<ICollection<CategoryLookupDto>>> GetList()
     {
         var query = new GetCategoryListQuery();
@@ -21,7 +23,7 @@ public class CategoryController : BaseController
         return Ok(dto);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet(ApiRoutes.Category.GetDescription)]
     public async Task<ActionResult<CategoryDescriptionDto>> GetDescription(Guid id)
     {
         var query = new GetCategoryDescriptionQuery()
@@ -33,14 +35,16 @@ public class CategoryController : BaseController
         return Ok(dto);
     }
 
-    [HttpPost]
+    [HttpPost(ApiRoutes.Category.Create)]
+    [Authorize(Roles = $"{Roles.Admin}")]
     public async Task<ActionResult<Guid>> Create(CreateCategoryCommand command)
     {
         var id = await Mediator.Send(command);
         return Ok(id);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut(ApiRoutes.Category.Update)]
+    [Authorize(Roles = $"{Roles.Admin}")]
     public async Task<ActionResult> Update(Guid id, UpdateCategoryRequest request)
     {
         var command = new UpdateCategoryCommand()
@@ -55,7 +59,8 @@ public class CategoryController : BaseController
         return Ok();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete(ApiRoutes.Category.Remove)]
+    [Authorize(Roles = $"{Roles.Admin}")]
     public async Task<ActionResult> Remove(Guid id)
     {
         var command = new RemoveCategoryCommand()
