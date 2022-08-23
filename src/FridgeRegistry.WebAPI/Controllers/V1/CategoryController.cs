@@ -1,9 +1,12 @@
+using FridgeRegistry.Application.Categories.Commands.AddProductToCategory;
 using FridgeRegistry.Application.Categories.Commands.CreateCategory;
 using FridgeRegistry.Application.Categories.Commands.RemoveCategory;
 using FridgeRegistry.Application.Categories.Commands.UpdateCategory;
 using FridgeRegistry.Application.Categories.Queries.GetCategoryDescription;
 using FridgeRegistry.Application.Categories.Queries.GetCategoryList;
+using FridgeRegistry.Application.Categories.Queries.GetCategoryProductsList;
 using FridgeRegistry.Application.DTO.Categories;
+using FridgeRegistry.Application.DTO.Products;
 using FridgeRegistry.WebAPI.Common.Constants;
 using FridgeRegistry.WebAPI.Contracts;
 using FridgeRegistry.WebAPI.Contracts.Requests.Category;
@@ -18,6 +21,18 @@ public class CategoryController : BaseController
     public async Task<ActionResult<ICollection<CategoryLookupDto>>> GetList()
     {
         var query = new GetCategoryListQuery();
+
+        var dto = await Mediator.Send(query);
+        return Ok(dto);
+    }
+    
+    [HttpGet(ApiRoutes.Category.GetProducts)]
+    public async Task<ActionResult<ICollection<ProductLookupDto>>> GetProducts(Guid id)
+    {
+        var query = new GetCategoryProductsListQuery()
+        {
+            CategoryId = id,
+        };
 
         var dto = await Mediator.Send(query);
         return Ok(dto);
@@ -53,6 +68,20 @@ public class CategoryController : BaseController
 
             ParentCategoryId = request.ParentCategoryId,
             Name = request.Name,
+        };
+
+        await Mediator.Send(command);
+        return Ok();
+    }
+    
+    [HttpPut(ApiRoutes.Category.AddProduct)]
+    [Authorize(Roles = $"{Roles.Admin}")]
+    public async Task<ActionResult> AddProduct(Guid categoryId, Guid productId)
+    {
+        var command = new AddProductToCategoryCommand()
+        {
+            CategoryId = categoryId,
+            ProductId = productId
         };
 
         await Mediator.Send(command);

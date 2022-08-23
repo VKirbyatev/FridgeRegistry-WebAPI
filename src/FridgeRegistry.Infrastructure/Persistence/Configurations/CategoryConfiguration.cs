@@ -18,8 +18,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 
         builder
             .HasMany(category => category.Products)
-            .WithOne()
-            .IsRequired()
+            .WithOne(product => product.Category)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder

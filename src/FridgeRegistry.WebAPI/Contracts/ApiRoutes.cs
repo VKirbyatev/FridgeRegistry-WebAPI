@@ -12,12 +12,29 @@ public static class ApiRoutes
     {
         public const string GetList = Base + "/category";
         
+        public const string GetProducts = Base + "/category/{id}/products";
+        
         public const string GetDescription = Base + "/category/{id}";
         
         public const string Create = Base + "/category";
         
         public const string Update = Base + "/category/{id}";
         
+        public const string AddProduct = Base + "/category/{categoryId}/product/{productId}";
+        
         public const string Remove = Base + "/category/{id}";
+    }
+
+    public static class Product
+    {
+        public const string GetList = Base + "/product";
+
+        public const string GetDescription = Base + "/product/{id}";
+        
+        public const string Create = Base + "/product";
+        
+        public const string Update = Base + "/product/{id}";
+
+        public const string Remove = Base + "/product/{id}";
     }
 }

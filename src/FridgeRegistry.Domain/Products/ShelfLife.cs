@@ -4,9 +4,9 @@ namespace FridgeRegistry.Domain.Products;
 
 public class ShelfLife : ValueObject
 {
-    public uint LifeTime { get; private set; }
+    public int LifeTime { get; private set; }
     
-    public ShelfLife(uint lifeTime)
+    public ShelfLife(int lifeTime)
     {
         LifeTime = lifeTime;
     }
@@ -20,7 +20,13 @@ public class ShelfLife : ValueObject
     {
         return dateTime.AddMilliseconds(LifeTime);
     }
-    
+
+    public override string ToString()
+    {
+        var timespan = DateTime.UtcNow.AddMilliseconds(LifeTime) - DateTime.UtcNow;
+        return timespan.ToString(@"hh\:mm\:ss");
+    }
+
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return LifeTime;

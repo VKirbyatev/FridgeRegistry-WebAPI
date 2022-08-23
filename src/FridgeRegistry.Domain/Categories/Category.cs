@@ -64,4 +64,25 @@ public class Category : Entity
         
         ModifiedAt = DateTime.UtcNow;
     }
+
+    public void AddProduct(Product product)
+    {
+        CheckRule(new UniqueProductInCategoryRule(this, product));
+        
+        _products.Add(product);
+        
+        ModifiedAt = DateTime.UtcNow;
+    }
+    
+    public void RemoveProduct(Product product)
+    {
+        var existingProduct = _products.FirstOrDefault(x => x.Id == product.Id);
+
+        if (existingProduct != null)
+        {
+            _products.Remove(existingProduct);
+        }
+        
+        ModifiedAt = DateTime.UtcNow;
+    }
 }

@@ -57,7 +57,7 @@ namespace FridgeRegistry.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -96,19 +96,18 @@ namespace FridgeRegistry.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("FridgeRegistry.Domain.Products.Product", b =>
                 {
-                    b.HasOne("FridgeRegistry.Domain.Categories.Category", null)
+                    b.HasOne("FridgeRegistry.Domain.Categories.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.OwnsOne("FridgeRegistry.Domain.Products.ShelfLife", "ShelfLife", b1 =>
                         {
                             b1.Property<Guid>("ProductId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<long>("LifeTime")
-                                .HasColumnType("bigint");
+                            b1.Property<int>("LifeTime")
+                                .HasColumnType("integer");
 
                             b1.HasKey("ProductId");
 
@@ -117,6 +116,8 @@ namespace FridgeRegistry.Infrastructure.Persistence.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("ProductId");
                         });
+
+                    b.Navigation("Category");
 
                     b.Navigation("ShelfLife")
                         .IsRequired();
