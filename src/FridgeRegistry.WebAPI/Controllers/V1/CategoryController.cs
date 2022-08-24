@@ -6,6 +6,7 @@ using FridgeRegistry.Application.Categories.Queries.GetCategoryDescription;
 using FridgeRegistry.Application.Categories.Queries.GetCategoryList;
 using FridgeRegistry.Application.Categories.Queries.GetCategoryProductsList;
 using FridgeRegistry.Application.DTO.Categories;
+using FridgeRegistry.Application.DTO.Common;
 using FridgeRegistry.Application.DTO.Products;
 using FridgeRegistry.WebAPI.Common.Constants;
 using FridgeRegistry.WebAPI.Contracts;
@@ -19,7 +20,7 @@ namespace FridgeRegistry.WebAPI.Controllers.V1;
 public class CategoryController : BaseController
 {
     [HttpGet(ApiRoutes.Category.GetList)]
-    public async Task<ActionResult<ICollection<CategoryLookupDto>>> GetList([FromQuery] PagingRequest request)
+    public async Task<ActionResult<PagedListDto<CategoryLookupDto>>> GetList([FromQuery] PagingRequest request)
     {
         var query = new GetCategoryListQuery()
         {
@@ -34,7 +35,7 @@ public class CategoryController : BaseController
     }
     
     [HttpGet(ApiRoutes.Category.GetProducts)]
-    public async Task<ActionResult<ICollection<ProductLookupDto>>> GetProducts(Guid id, PagingRequest request)
+    public async Task<ActionResult<PagedListDto<ProductLookupDto>>> GetProducts(Guid id, [FromQuery] PagingRequest request)
     {
         var query = new GetCategoryProductsListQuery()
         {
@@ -68,6 +69,20 @@ public class CategoryController : BaseController
         var id = await Mediator.Send(command);
         return Ok(id);
     }
+    
+    [HttpPost(ApiRoutes.Category.AddProduct)]
+    [Authorize(Roles = $"{Roles.Admin}")]
+    public async Task<ActionResult> AddProduct(Guid categoryId, Guid productId)
+    {
+        var command = new AddProductToCategoryCommand()
+        {
+            CategoryId = categoryId,
+            ProductId = productId
+        };
+
+        await Mediator.Send(command);
+        return Ok();
+    }
 
     [HttpPut(ApiRoutes.Category.Update)]
     [Authorize(Roles = $"{Roles.Admin}")]
@@ -79,20 +94,6 @@ public class CategoryController : BaseController
 
             ParentCategoryId = request.ParentCategoryId,
             Name = request.Name,
-        };
-
-        await Mediator.Send(command);
-        return Ok();
-    }
-    
-    [HttpPut(ApiRoutes.Category.AddProduct)]
-    [Authorize(Roles = $"{Roles.Admin}")]
-    public async Task<ActionResult> AddProduct(Guid categoryId, Guid productId)
-    {
-        var command = new AddProductToCategoryCommand()
-        {
-            CategoryId = categoryId,
-            ProductId = productId
         };
 
         await Mediator.Send(command);

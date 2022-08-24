@@ -18,7 +18,7 @@ public class RemoveProductCommandHandler : IRequestHandler<RemoveProductCommand>
     public async Task<Unit> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products.FirstOrDefaultAsync(
-            x => x.Id == request.ProductId, cancellationToken
+            product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
         );
 
         if (product == null)
@@ -26,7 +26,7 @@ public class RemoveProductCommandHandler : IRequestHandler<RemoveProductCommand>
             throw new NotFoundException(nameof(Product), request.ProductId);
         }
 
-        _dbContext.Products.Remove(product);
+        product.Remove();
         await _dbContext.SaveChangesAsync(cancellationToken);
         
         return Unit.Value;

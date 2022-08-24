@@ -26,7 +26,7 @@ public class GetCategoryDescriptionHandler : IRequestHandler<GetCategoryDescript
             .Include(category => category.Parent)
             .Include(category => category.Children)
             .SingleOrDefaultAsync(
-                category => category.Id == request.CategoryId, cancellationToken
+                category => category.Id == request.CategoryId && category.IsDeleted == false, cancellationToken
             );
 
         if (category == null)

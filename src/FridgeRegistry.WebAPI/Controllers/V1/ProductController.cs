@@ -1,3 +1,4 @@
+using FridgeRegistry.Application.DTO.Common;
 using FridgeRegistry.Application.DTO.Products;
 using FridgeRegistry.Application.Products.Commands.CreateProduct;
 using FridgeRegistry.Application.Products.Commands.RemoveProduct;
@@ -16,7 +17,7 @@ namespace FridgeRegistry.WebAPI.Controllers.V1;
 public class ProductController : BaseController
 {
     [HttpGet(ApiRoutes.Product.GetList)]
-    public async Task<ActionResult<ICollection<ProductLookupDto>>> GetList([FromQuery] PagingRequest request)
+    public async Task<ActionResult<PagedListDto<ProductLookupDto>>> GetList([FromQuery] PagingRequest request)
     {
         var query = new GetProductsListQuery()
         {

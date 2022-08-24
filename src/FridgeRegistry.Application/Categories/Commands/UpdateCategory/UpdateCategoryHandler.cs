@@ -18,7 +18,7 @@ public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand>
     public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await _context.Categories.FirstOrDefaultAsync(
-            category => category.Id == request.CategoryId, cancellationToken
+            category => category.Id == request.CategoryId && category.IsDeleted == false, cancellationToken
         );
 
         if (category == null)

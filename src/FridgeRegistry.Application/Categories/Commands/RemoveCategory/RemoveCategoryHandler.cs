@@ -18,7 +18,7 @@ public class RemoveCategoryHandler : IRequestHandler<RemoveCategoryCommand>
     public async Task<Unit> Handle(RemoveCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await _context.Categories.FirstOrDefaultAsync(
-            category => category.Id == request.CategoryId, cancellationToken
+            category => category.Id == request.CategoryId && category.IsDeleted == false, cancellationToken
         );
 
         if (category == null)
@@ -26,7 +26,7 @@ public class RemoveCategoryHandler : IRequestHandler<RemoveCategoryCommand>
             throw new NotFoundException(nameof(Category), request.CategoryId);
         }
 
-        _context.Categories.Remove(category);
+        category.Remove();
         await _context.SaveChangesAsync(cancellationToken);
         
         return Unit.Value;

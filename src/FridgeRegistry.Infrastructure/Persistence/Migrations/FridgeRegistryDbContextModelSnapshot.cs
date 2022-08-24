@@ -31,6 +31,9 @@ namespace FridgeRegistry.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -67,6 +70,9 @@ namespace FridgeRegistry.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -82,6 +88,51 @@ namespace FridgeRegistry.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("FridgeRegistry.Domain.UserProducts.UserProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Commentary")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ProductionDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<float>("Quantity")
+                        .HasColumnType("real");
+
+                    b.Property<int>("QuantityType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("UserProducts");
                 });
 
             modelBuilder.Entity("FridgeRegistry.Domain.Categories.Category", b =>
@@ -121,6 +172,17 @@ namespace FridgeRegistry.Infrastructure.Persistence.Migrations
 
                     b.Navigation("ShelfLife")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FridgeRegistry.Domain.UserProducts.UserProduct", b =>
+                {
+                    b.HasOne("FridgeRegistry.Domain.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("FridgeRegistry.Domain.Categories.Category", b =>

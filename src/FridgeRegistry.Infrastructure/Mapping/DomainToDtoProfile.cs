@@ -1,8 +1,10 @@
 using AutoMapper;
 using FridgeRegistry.Application.DTO.Categories;
 using FridgeRegistry.Application.DTO.Products;
+using FridgeRegistry.Application.DTO.UserProduct;
 using FridgeRegistry.Domain.Categories;
 using FridgeRegistry.Domain.Products;
+using FridgeRegistry.Domain.UserProducts;
 
 namespace FridgeRegistry.Infrastructure.Mapping;
 
@@ -41,6 +43,22 @@ public class DomainToDtoProfile : Profile
             .ForMember(dest => dest.ShelfLife,
                 options => options.MapFrom(
                     src => src.ShelfLife.ToString()
+                ));
+
+        CreateMap<UserProduct, UserProductDescriptionDto>()
+            .ForMember(dest => dest.ProductId,
+                options => options.MapFrom(
+                    src => src.Product.Id
+                ))
+            .ForMember(dest => dest.ProductName,
+                options => options.MapFrom(
+                    src => src.Product.Name
+                ));
+        
+        CreateMap<UserProduct, UserProductLookupDto>()
+            .ForMember(dest => dest.ProductName,
+                options => options.MapFrom(
+                    src => src.Product.Name
                 ));
     }
 }

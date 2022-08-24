@@ -39,10 +39,20 @@ public class ExceptionHandlerMiddleware
                 break;
             case ValidationException validationException:
                 code = HttpStatusCode.BadRequest;
-                message = JsonSerializer.Serialize(validationException.Errors);
+                message = JsonSerializer.Serialize(new
+                    {
+                        Errors = validationException.Errors.Select(error => new
+                        {
+                            PropertyName = error.PropertyName,
+                            Message = error.ErrorMessage,
+                        }).ToList(),
+                    });
                 break;
             case BusinessRuleValidationException:
                 code = HttpStatusCode.BadRequest;
+                break;
+            case NotOwnedException:
+                code = HttpStatusCode.Forbidden;
                 break;
         }
 

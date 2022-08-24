@@ -7,14 +7,13 @@ public class PagingQueryValidator: AbstractValidator<PagingQuery>
 {
     public PagingQueryValidator()
     {
+        RuleFor(query => query.SearchString)
+            .MaximumLength(100);
+        
         RuleFor(query => query.Take)
-            .NotNull()
-            .NotEmpty()
             .GreaterThanOrEqualTo(1);
         
         RuleFor(query => query.Skip)
-            .NotNull()
-            .NotEmpty()
             .GreaterThanOrEqualTo(0);
     }
 }

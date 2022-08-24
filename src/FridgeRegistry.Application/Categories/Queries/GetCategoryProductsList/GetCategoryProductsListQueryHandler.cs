@@ -25,7 +25,7 @@ public class GetCategoryProductsListQueryHandler : IRequestHandler<GetCategoryPr
     public async Task<PagedListDto<ProductLookupDto>> Handle(GetCategoryProductsListQuery request, CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories.SingleOrDefaultAsync(
-            category => category.Id == request.CategoryId, cancellationToken
+            category => category.Id == request.CategoryId && category.IsDeleted == false, cancellationToken
         );
 
         if (category == null)
@@ -40,7 +40,7 @@ public class GetCategoryProductsListQueryHandler : IRequestHandler<GetCategoryPr
         var totalPages = (totalProductsCount + request.Take - 1) / request.Take;
         
         var pagedProducts = totalProducts
-            .Where(x => x.Name.ToLower().Contains(searchString.ToLower()))
+            .Where(x => x.Name.ToLower().Contains(searchString.ToLower()) && x.IsDeleted == false)
             .Skip(request.Skip)
             .Take(request.Take);
         

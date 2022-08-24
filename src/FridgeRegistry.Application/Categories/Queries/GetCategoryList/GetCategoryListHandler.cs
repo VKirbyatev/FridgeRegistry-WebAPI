@@ -24,7 +24,7 @@ public class GetCategoryListHandler : IRequestHandler<GetCategoryListQuery, Page
         var searchString = request.SearchString ?? string.Empty;
         
         var categories = await _context.Categories
-            .Where(x => x.Name.ToLower().Contains(searchString.ToLower()))
+            .Where(x => x.Name.ToLower().Contains(searchString.ToLower()) && x.IsDeleted == false)
             .Skip(request.Skip)
             .Take(request.Take)
             .ProjectTo<CategoryLookupDto>(_mapper.ConfigurationProvider)

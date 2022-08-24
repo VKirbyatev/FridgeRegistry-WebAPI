@@ -18,7 +18,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
     public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products.FirstOrDefaultAsync(
-            x => x.Id == request.ProductId, cancellationToken
+            product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
         );
 
         if (product == null)

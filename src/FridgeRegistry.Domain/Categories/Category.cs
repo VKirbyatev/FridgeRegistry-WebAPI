@@ -19,6 +19,8 @@ public class Category : Entity
 
     public DateTime CreatedAt { get; private set; }
     public DateTime ModifiedAt { get; private set; }
+    
+    public bool IsDeleted { get; private set; }
 
     private Category() {}
 
@@ -31,6 +33,8 @@ public class Category : Entity
 
         _children = new List<Category>();
         _products = new List<Product>();
+
+        IsDeleted = false;
         
         CreatedAt = DateTime.UtcNow;
         ModifiedAt = DateTime.UtcNow;
@@ -83,6 +87,12 @@ public class Category : Entity
             _products.Remove(existingProduct);
         }
         
+        ModifiedAt = DateTime.UtcNow;
+    }
+
+    public void Remove()
+    {
+        IsDeleted = true;
         ModifiedAt = DateTime.UtcNow;
     }
 }

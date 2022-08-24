@@ -18,6 +18,8 @@ public class Product : Entity
     public DateTime CreatedAt { get; private set; }
     public DateTime ModifiedAt { get; private set; }
     
+    public bool IsDeleted { get; private set; }
+
     private Product() {}
 
     public Product(
@@ -37,6 +39,8 @@ public class Product : Entity
         var timespan = TimeSpan.Parse(shelfLife);
         ShelfLife = new ShelfLife((int)timespan.TotalMilliseconds);
 
+        IsDeleted = false;
+        
         CreatedAt = DateTime.UtcNow;
         ModifiedAt = DateTime.UtcNow;
     }
@@ -63,6 +67,13 @@ public class Product : Entity
     public void SetDescription(string description)
     {
         Description = description;
+        
+        ModifiedAt = DateTime.UtcNow;
+    }
+
+    public void Remove()
+    {
+        IsDeleted = true;
         
         ModifiedAt = DateTime.UtcNow;
     }

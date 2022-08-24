@@ -23,8 +23,8 @@ public class GetProductDescriptionQueryHandler : IRequestHandler<GetProductDescr
     {
         var product = await _dbContext.Products
             .Include(product => product.Category)
-            .SingleOrDefaultAsync(
-            x => x.Id == request.ProductId, cancellationToken
+            .FirstOrDefaultAsync(
+            product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
         );
 
         if (product == null)

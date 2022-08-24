@@ -24,7 +24,7 @@ public class GetProductsListQueryHandler : IRequestHandler<GetProductsListQuery,
         var searchString = request.SearchString ?? string.Empty;
         
         var products = await _dbContext.Products
-            .Where(x => x.Name.ToLower().Contains(searchString.ToLower()))
+            .Where(x => x.Name.ToLower().Contains(searchString.ToLower()) && x.IsDeleted == false)
             .Skip(request.Skip)
             .Take(request.Take)
             .ProjectTo<ProductLookupDto>(_mapper.ConfigurationProvider)

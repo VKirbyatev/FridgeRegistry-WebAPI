@@ -19,7 +19,7 @@ public class AddProductToCategoryCommandHandler : IRequestHandler<AddProductToCa
     public async Task<Unit> Handle(AddProductToCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories.FirstOrDefaultAsync(
-            x => x.Id == request.CategoryId, cancellationToken
+            category => category.Id == request.CategoryId && category.IsDeleted == false, cancellationToken
         );
 
         if (category == null)
@@ -28,7 +28,7 @@ public class AddProductToCategoryCommandHandler : IRequestHandler<AddProductToCa
         }
         
         var product = await _dbContext.Products.FirstOrDefaultAsync(
-            x => x.Id == request.ProductId, cancellationToken
+            product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
         );
         
         if (product == null)

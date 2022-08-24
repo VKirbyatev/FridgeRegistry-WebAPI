@@ -29,8 +29,8 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
         if (request.CategoryId != null)
         {
-            var category = await _dbContext.Categories.SingleOrDefaultAsync(
-                x => x.Id == request.CategoryId, cancellationToken
+            var category = await _dbContext.Categories.FirstOrDefaultAsync(
+                category => category.Id == request.CategoryId && category.IsDeleted == false, cancellationToken
             );
 
             if (category == null)
