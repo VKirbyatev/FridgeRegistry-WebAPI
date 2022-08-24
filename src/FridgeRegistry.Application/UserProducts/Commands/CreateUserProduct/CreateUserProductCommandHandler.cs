@@ -1,5 +1,5 @@
 using FridgeRegistry.Application.Common.Exceptions;
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using FridgeRegistry.Domain.Products;
 using FridgeRegistry.Domain.UserProducts;
 using MediatR;
@@ -18,9 +18,10 @@ public class CreateUserProductCommandHandler : IRequestHandler<CreateUserProduct
     
     public async Task<Guid> Handle(CreateUserProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _dbContext.Products.FirstOrDefaultAsync(
-            product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
-        );
+        var product = await _dbContext.Products
+            .FirstOrDefaultAsync(
+                product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
+            );
 
         if (product == null)
         {

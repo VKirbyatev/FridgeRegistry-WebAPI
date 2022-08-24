@@ -1,7 +1,7 @@
 using AutoMapper;
-using FridgeRegistry.Application.DTO.Categories;
-using FridgeRegistry.Application.DTO.Products;
-using FridgeRegistry.Application.DTO.UserProduct;
+using FridgeRegistry.Application.Contracts.Dto.Categories;
+using FridgeRegistry.Application.Contracts.Dto.Products;
+using FridgeRegistry.Application.Contracts.Dto.UserProduct;
 using FridgeRegistry.Domain.Categories;
 using FridgeRegistry.Domain.Products;
 using FridgeRegistry.Domain.UserProducts;
@@ -12,6 +12,10 @@ public class DomainToDtoProfile : Profile
 {
     public DomainToDtoProfile()
     {
+        //----------------------------------------------------------------------------------------------------
+        // Categories mapping
+        //----------------------------------------------------------------------------------------------------
+        
         CreateMap<Category, CategoryDescriptionDto>()
             .ForMember(dest => dest.ParentId,
                 options => options.MapFrom(
@@ -24,6 +28,10 @@ public class DomainToDtoProfile : Profile
                 ));
 
         CreateMap<Category, CategoryLookupDto>();
+        
+        //----------------------------------------------------------------------------------------------------
+        // Products mapping
+        //----------------------------------------------------------------------------------------------------
 
         CreateMap<Product, ProductDescriptionDto>()
             .ForMember(dest => dest.CategoryId,
@@ -44,6 +52,10 @@ public class DomainToDtoProfile : Profile
                 options => options.MapFrom(
                     src => src.ShelfLife.ToString()
                 ));
+        
+        //----------------------------------------------------------------------------------------------------
+        // User's products mapping
+        //----------------------------------------------------------------------------------------------------
 
         CreateMap<UserProduct, UserProductDescriptionDto>()
             .ForMember(dest => dest.ProductId,
@@ -60,5 +72,7 @@ public class DomainToDtoProfile : Profile
                 options => options.MapFrom(
                     src => src.Product.Name
                 ));
+        
+        //----------------------------------------------------------------------------------------------------
     }
 }

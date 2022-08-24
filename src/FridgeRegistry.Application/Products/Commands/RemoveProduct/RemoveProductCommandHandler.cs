@@ -1,5 +1,5 @@
 using FridgeRegistry.Application.Common.Exceptions;
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using FridgeRegistry.Domain.Products;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +17,10 @@ public class RemoveProductCommandHandler : IRequestHandler<RemoveProductCommand>
     
     public async Task<Unit> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _dbContext.Products.FirstOrDefaultAsync(
-            product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
-        );
+        var product = await _dbContext.Products
+            .FirstOrDefaultAsync(
+                product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
+            );
 
         if (product == null)
         {

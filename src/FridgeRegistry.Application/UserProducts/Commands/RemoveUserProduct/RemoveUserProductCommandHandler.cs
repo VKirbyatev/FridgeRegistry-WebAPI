@@ -1,5 +1,5 @@
 using FridgeRegistry.Application.Common.Exceptions;
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using FridgeRegistry.Domain.UserProducts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +17,10 @@ public class RemoveUserProductCommandHandler : IRequestHandler<RemoveUserProduct
 
     public async Task<Unit> Handle(RemoveUserProductCommand request, CancellationToken cancellationToken)
     {
-        var userProduct = await _dbContext.UserProducts.FirstOrDefaultAsync(
-            userProduct => userProduct.Id == request.UserProductId, cancellationToken
-        );
+        var userProduct = await _dbContext.UserProducts
+            .FirstOrDefaultAsync(
+                userProduct => userProduct.Id == request.UserProductId, cancellationToken
+            );
 
         if (userProduct == null)
         {
@@ -28,7 +29,7 @@ public class RemoveUserProductCommandHandler : IRequestHandler<RemoveUserProduct
 
         if (userProduct.UserId != request.UserId)
         {
-            throw new NotOwnedException();
+            throw new ForbiddenResourceException();
         }
 
         _dbContext.UserProducts.Remove(userProduct);

@@ -1,4 +1,4 @@
-using FridgeRegistry.Application.DTO.Categories;
+using FridgeRegistry.Application.Contracts.Dto.Categories;
 using MediatR;
 
 namespace FridgeRegistry.Application.Categories.Queries.GetCategoryDescription;

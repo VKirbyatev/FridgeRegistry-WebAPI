@@ -1,9 +1,8 @@
 using AutoMapper;
 using FridgeRegistry.Application.Common.Exceptions;
-using FridgeRegistry.Application.DTO.Categories;
-using FridgeRegistry.Application.DTO.Common;
-using FridgeRegistry.Application.DTO.Products;
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Contracts.Dto.Common;
+using FridgeRegistry.Application.Contracts.Dto.Products;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using FridgeRegistry.Domain.Categories;
 using FridgeRegistry.Domain.Products;
 using MediatR;

@@ -1,9 +1,9 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using FridgeRegistry.Application.Common.Query;
-using FridgeRegistry.Application.DTO.Common;
-using FridgeRegistry.Application.DTO.UserProduct;
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Common.Constants.Sorting;
+using FridgeRegistry.Application.Contracts.Dto.Common;
+using FridgeRegistry.Application.Contracts.Dto.UserProduct;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using FridgeRegistry.Domain.UserProducts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +27,9 @@ public class GetUserProductListQueryHandler : IRequestHandler<GetUserProductList
 
         var userProducts = _dbContext.UserProducts
             .Include(x => x.Product)
-            .Where(x => x.Product.Name.ToLower().Contains(searchString.ToLower()) && x.UserId == request.UserId);
+            .Where(
+                x => x.Product.Name.ToLower().Contains(searchString.ToLower()) && x.UserId == request.UserId
+            );
 
         userProducts = OrderUserProducts(userProducts, request.SortBy, request.SortType);    
             
@@ -37,9 +39,10 @@ public class GetUserProductListQueryHandler : IRequestHandler<GetUserProductList
             .ProjectTo<UserProductLookupDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
-        var totalUserProducts = _dbContext.UserProducts.Count(
-            x => x.Product.Name.ToLower().Contains(searchString.ToLower()) && x.UserId == request.UserId
-        );
+        var totalUserProducts = _dbContext.UserProducts
+            .Count(
+                x => x.Product.Name.ToLower().Contains(searchString.ToLower()) && x.UserId == request.UserId
+            );
         var totalPages = (totalUserProducts + request.Take - 1) / request.Take;
 
         return new PagedListDto<UserProductLookupDto>()
@@ -56,11 +59,11 @@ public class GetUserProductListQueryHandler : IRequestHandler<GetUserProductList
 
         return sortBy switch
         {
-            SortQueryParams.UserProduct.ByName => sortType == SortQueryParams.Asc
+            UserProductsSortMethods.ByName => sortType == SortTypes.Asc
                 ? items.OrderBy(x => x.Product.Name)
                 : items.OrderByDescending(x => x.Product.Name),
             
-            SortQueryParams.UserProduct.ByExpirationDate => sortType == SortQueryParams.Asc
+            UserProductsSortMethods.ByExpirationDate => sortType == SortTypes.Asc
                 ? items.OrderBy(x => x.ExpirationDate)
                 : items.OrderByDescending(x => x.ExpirationDate),
             

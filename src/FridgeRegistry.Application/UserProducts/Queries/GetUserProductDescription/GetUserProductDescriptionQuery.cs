@@ -1,4 +1,4 @@
-using FridgeRegistry.Application.DTO.UserProduct;
+using FridgeRegistry.Application.Contracts.Dto.UserProduct;
 using MediatR;
 
 namespace FridgeRegistry.Application.UserProducts.Queries.GetUserProductDescription;

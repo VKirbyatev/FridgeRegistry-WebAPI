@@ -51,7 +51,7 @@ public class ExceptionHandlerMiddleware
             case BusinessRuleValidationException:
                 code = HttpStatusCode.BadRequest;
                 break;
-            case NotOwnedException:
+            case ForbiddenResourceException:
                 code = HttpStatusCode.Forbidden;
                 break;
         }

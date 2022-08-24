@@ -1,6 +1,5 @@
-using FluentValidation;
 using FridgeRegistry.Application.Common.Exceptions;
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using FridgeRegistry.Domain.Categories;
 using FridgeRegistry.Domain.Products;
 using MediatR;
@@ -29,9 +28,10 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
         if (request.CategoryId != null)
         {
-            var category = await _dbContext.Categories.FirstOrDefaultAsync(
-                category => category.Id == request.CategoryId && category.IsDeleted == false, cancellationToken
-            );
+            var category = await _dbContext.Categories
+                .FirstOrDefaultAsync(
+                    category => category.Id == request.CategoryId && category.IsDeleted == false, cancellationToken
+                );
 
             if (category == null)
             {

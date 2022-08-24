@@ -1,4 +1,4 @@
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using FridgeRegistry.Domain.Categories;
 using FridgeRegistry.Domain.Products;
 using FridgeRegistry.Domain.UserProducts;

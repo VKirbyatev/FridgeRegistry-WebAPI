@@ -1,8 +1,8 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using FridgeRegistry.Application.DTO.Common;
-using FridgeRegistry.Application.DTO.Products;
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Contracts.Dto.Common;
+using FridgeRegistry.Application.Contracts.Dto.Products;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

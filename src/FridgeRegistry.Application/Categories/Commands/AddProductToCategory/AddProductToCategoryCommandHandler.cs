@@ -1,5 +1,5 @@
 using FridgeRegistry.Application.Common.Exceptions;
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using FridgeRegistry.Domain.Categories;
 using FridgeRegistry.Domain.Products;
 using MediatR;
@@ -18,30 +18,29 @@ public class AddProductToCategoryCommandHandler : IRequestHandler<AddProductToCa
 
     public async Task<Unit> Handle(AddProductToCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await _dbContext.Categories.FirstOrDefaultAsync(
-            category => category.Id == request.CategoryId && category.IsDeleted == false, cancellationToken
-        );
+        var category = await _dbContext.Categories
+            .FirstOrDefaultAsync(
+                category => category.Id == request.CategoryId && category.IsDeleted == false, cancellationToken
+            );
 
         if (category == null)
         {
             throw new NotFoundException(nameof(Category), request.CategoryId);
         }
-        
-        var product = await _dbContext.Products.FirstOrDefaultAsync(
-            product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
-        );
+
+        var product = await _dbContext.Products
+            .FirstOrDefaultAsync(
+                product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
+            );
         
         if (product == null)
         {
             throw new NotFoundException(nameof(Product), request.ProductId);
         }
 
-        if (product.Category != null)
-        {
-            product.Category.RemoveProduct(product);
-        }
-        
+        product.Category?.RemoveProduct(product);
         category.AddProduct(product);
+        
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;

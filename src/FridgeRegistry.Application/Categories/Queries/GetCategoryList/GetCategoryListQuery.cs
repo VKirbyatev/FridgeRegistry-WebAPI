@@ -1,6 +1,6 @@
-using FridgeRegistry.Application.Common.Query;
-using FridgeRegistry.Application.DTO.Categories;
-using FridgeRegistry.Application.DTO.Common;
+using FridgeRegistry.Application.Contracts.BaseClasses.Query;
+using FridgeRegistry.Application.Contracts.Dto.Categories;
+using FridgeRegistry.Application.Contracts.Dto.Common;
 using MediatR;
 
 namespace FridgeRegistry.Application.Categories.Queries.GetCategoryList;

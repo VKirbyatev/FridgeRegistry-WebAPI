@@ -1,7 +1,7 @@
 using AutoMapper;
 using FridgeRegistry.Application.Common.Exceptions;
-using FridgeRegistry.Application.DTO.Products;
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Contracts.Dto.Products;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using FridgeRegistry.Domain.Products;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +24,8 @@ public class GetProductDescriptionQueryHandler : IRequestHandler<GetProductDescr
         var product = await _dbContext.Products
             .Include(product => product.Category)
             .FirstOrDefaultAsync(
-            product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
-        );
+                product => product.Id == request.ProductId && product.IsDeleted == false, cancellationToken
+            );
 
         if (product == null)
         {

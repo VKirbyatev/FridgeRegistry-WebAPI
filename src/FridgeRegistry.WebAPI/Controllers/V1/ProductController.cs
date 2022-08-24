@@ -1,5 +1,5 @@
-using FridgeRegistry.Application.DTO.Common;
-using FridgeRegistry.Application.DTO.Products;
+using FridgeRegistry.Application.Contracts.Dto.Common;
+using FridgeRegistry.Application.Contracts.Dto.Products;
 using FridgeRegistry.Application.Products.Commands.CreateProduct;
 using FridgeRegistry.Application.Products.Commands.RemoveProduct;
 using FridgeRegistry.Application.Products.Commands.UpdateProduct;

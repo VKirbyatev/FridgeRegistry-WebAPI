@@ -1,4 +1,4 @@
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using FridgeRegistry.Infrastructure.Mapping;
 using FridgeRegistry.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;

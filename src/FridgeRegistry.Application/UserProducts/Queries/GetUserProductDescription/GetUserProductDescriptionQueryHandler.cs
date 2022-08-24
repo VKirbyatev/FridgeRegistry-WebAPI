@@ -1,7 +1,7 @@
 using AutoMapper;
 using FridgeRegistry.Application.Common.Exceptions;
-using FridgeRegistry.Application.DTO.UserProduct;
-using FridgeRegistry.Application.Interfaces;
+using FridgeRegistry.Application.Contracts.Dto.UserProduct;
+using FridgeRegistry.Application.Contracts.Interfaces;
 using FridgeRegistry.Domain.UserProducts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +24,8 @@ public class GetUserProductDescriptionQueryHandler : IRequestHandler<GetUserProd
         var userProduct = await _dbContext.UserProducts
             .Include(userProduct => userProduct.Product)
             .FirstOrDefaultAsync(
-            userProduct => userProduct.Id == request.UserProductId, cancellationToken
-        );
+                userProduct => userProduct.Id == request.UserProductId, cancellationToken
+            );
 
         if (userProduct == null)
         {
@@ -34,7 +34,7 @@ public class GetUserProductDescriptionQueryHandler : IRequestHandler<GetUserProd
 
         if (userProduct.UserId != request.UserId)
         {
-            throw new NotOwnedException();
+            throw new ForbiddenResourceException();
         }
 
         return _mapper.Map<UserProductDescriptionDto>(userProduct);
