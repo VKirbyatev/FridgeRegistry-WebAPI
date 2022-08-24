@@ -1,10 +1,11 @@
+using System.Reflection;
 using Microsoft.OpenApi.Models;
 
 namespace FridgeRegistry.WebAPI.Common.Initializations;
 
 public static class SwaggerInitialization
 {
-    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    public static IServiceCollection AddCustormSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>
         {
@@ -31,8 +32,13 @@ public static class SwaggerInitialization
                     new string[] { } 
                 } 
             });
+
+            var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            
+            options.IncludeXmlComments(xmlPath);
         });
-        
+
         return services;
     }
 }

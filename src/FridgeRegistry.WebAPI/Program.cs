@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using FridgeRegistry.Application;
 using FridgeRegistry.Infrastructure;
 using FridgeRegistry.WebAPI.Common.Initializations;
@@ -11,9 +12,13 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddCustomCors();
-builder.Services.AddSwagger();
+builder.Services.AddCustormSwagger();
 
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(
+        options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())
+    );
 
 var app = builder.Build();
 

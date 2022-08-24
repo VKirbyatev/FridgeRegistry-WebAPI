@@ -19,6 +19,10 @@ namespace FridgeRegistry.WebAPI.Controllers.V1;
 
 public class CategoryController : BaseController
 {
+    /// <summary>
+    /// Return all categories in the app
+    /// </summary>
+    /// <response code="200">Return all categories in the app</response>
     [HttpGet(ApiRoutes.Category.GetList)]
     public async Task<ActionResult<PagedListDto<CategoryLookupDto>>> GetList([FromQuery] PagingRequest request)
     {
@@ -34,6 +38,12 @@ public class CategoryController : BaseController
         return Ok(dto);
     }
     
+    /// <summary>
+    /// Return all products in category
+    /// </summary>
+    /// <response code="200">Return all products in category</response>
+    /// <response code="400">Unable to find products due to validation errors</response>
+    /// <response code="404">Category with provided Id does not exists</response>
     [HttpGet(ApiRoutes.Category.GetProducts)]
     public async Task<ActionResult<PagedListDto<ProductLookupDto>>> GetProducts(Guid id, [FromQuery] PagingRequest request)
     {
@@ -50,6 +60,12 @@ public class CategoryController : BaseController
         return Ok(dto);
     }
 
+    /// <summary>
+    /// Return full category description
+    /// </summary>
+    /// <response code="200">Return full category description</response>
+    /// <response code="400">Unable to find category due to validation errors</response>
+    /// <response code="404">Category with provided Id does not exists</response>
     [HttpGet(ApiRoutes.Category.GetDescription)]
     public async Task<ActionResult<CategoryDescriptionDto>> GetDescription(Guid id)
     {
@@ -62,6 +78,11 @@ public class CategoryController : BaseController
         return Ok(dto);
     }
 
+    /// <summary>
+    /// Creates new category
+    /// </summary>
+    /// <response code="200">Creates new category</response>
+    /// <response code="400">Unable to create new category due to validation errors</response>
     [HttpPost(ApiRoutes.Category.Create)]
     [Authorize(Roles = $"{Roles.Admin}")]
     public async Task<ActionResult<Guid>> Create(CreateCategoryCommand command)
@@ -70,6 +91,12 @@ public class CategoryController : BaseController
         return Ok(id);
     }
     
+    /// <summary>
+    /// Places product in category by id
+    /// </summary>
+    /// <response code="200">Places product in category by id</response>
+    /// <response code="400">Unable to add product to category due to validation errors</response>
+    /// <response code="404">Category or product with provided Id does not exists</response>
     [HttpPost(ApiRoutes.Category.AddProduct)]
     [Authorize(Roles = $"{Roles.Admin}")]
     public async Task<ActionResult> AddProduct(Guid categoryId, Guid productId)
@@ -84,6 +111,12 @@ public class CategoryController : BaseController
         return Ok();
     }
 
+    /// <summary>
+    /// Updates category by id
+    /// </summary>
+    /// <response code="200">Updates category by id</response>
+    /// <response code="400">Unable to update category due to validation errors</response>
+    /// <response code="404">Category with provided Id does not exists</response>
     [HttpPut(ApiRoutes.Category.Update)]
     [Authorize(Roles = $"{Roles.Admin}")]
     public async Task<ActionResult> Update(Guid id, UpdateCategoryRequest request)
@@ -100,6 +133,12 @@ public class CategoryController : BaseController
         return Ok();
     }
 
+    /// <summary>
+    /// Removes category by id
+    /// </summary>
+    /// <response code="200">Removes category by id</response>
+    /// <response code="400">Unable to remove category due to validation errors</response>
+    /// <response code="404">Category with provided Id does not exists</response>
     [HttpDelete(ApiRoutes.Category.Remove)]
     [Authorize(Roles = $"{Roles.Admin}")]
     public async Task<ActionResult> Remove(Guid id)

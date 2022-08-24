@@ -15,6 +15,12 @@ namespace FridgeRegistry.WebAPI.Controllers.V1;
 
 public class UserProductController : BaseController
 {
+    /// <summary>
+    /// Return all user's products
+    /// </summary>
+    /// <param name="SortType">ASC (Ascending) or DESC (Descending) sort types</param>
+    /// <param name="SortBy">Available sorting methods: [ "Name", "Expiration_Date" ]</param>
+    /// <response code="200">Return all user's products</response>
     [HttpGet(ApiRoutes.UserProducts.GetList)]
     [Authorize]
     public async Task<ActionResult<PagedListDto<UserProductLookupDto>>> GetList([FromQuery] GetUserProductListRequest request)
@@ -38,6 +44,12 @@ public class UserProductController : BaseController
         return Ok(dto);
     }
     
+    /// <summary>
+    /// Return full description about single user's product
+    /// </summary>
+    /// <response code="200">Return full description about single user's product</response>
+    /// <response code="400">Unable to find product due to validation errors</response>
+    /// <response code="404">Product with provided Id does not exists</response>
     [HttpGet(ApiRoutes.UserProducts.GetDescription)]
     [Authorize]
     public async Task<ActionResult<UserProductDescriptionDto>> GetDescription(Guid id)
@@ -54,6 +66,12 @@ public class UserProductController : BaseController
         return Ok(dto);
     }
     
+    /// <summary>
+    /// Creates new product in user's collection
+    /// </summary>
+    /// <param name="QuantityType">Enumeration type of quantity type. (E.g. Kilograms, Pounds, Items etc.)</param>
+    /// <response code="200">Creates new product in user's collection</response>
+    /// <response code="400">Unable to create new product due to validation errors</response>
     [HttpPost(ApiRoutes.UserProducts.Create)]
     [Authorize]
     public async Task<ActionResult<Guid>> Create(CreateUserProductRequest request)
@@ -77,6 +95,14 @@ public class UserProductController : BaseController
         return Ok(id);
     }
     
+    /// <summary>
+    /// Updates product in user's collection
+    /// </summary>
+    /// <param name="QuantityType">Enumeration type of quantity type. (E.g. Kilograms, Pounds, Items etc.)</param>
+    /// <response code="200">Updates product in user's collection</response>
+    /// <response code="400">Unable to update product due to validation errors</response>
+    /// /// <response code="403">Forbidden action, only product's creator allowed to do that</response>
+    /// <response code="404">Product with provided Id does not exists</response>
     [HttpPut(ApiRoutes.UserProducts.Update)]
     [Authorize]
     public async Task<ActionResult> Update(Guid id, UpdateUserProductRequest request)
@@ -100,6 +126,12 @@ public class UserProductController : BaseController
         return Ok();
     }
     
+    /// <summary>
+    /// Remove product from user's collection
+    /// </summary>
+    /// <response code="200">Remove product from user's collection</response>
+    /// <response code="403">Forbidden action, only product's creator allowed to do that</response>
+    /// <response code="404">Product with provided Id does not exists</response>
     [HttpDelete(ApiRoutes.UserProducts.Remove)]
     [Authorize]
     public async Task<ActionResult> Remove(Guid id)
