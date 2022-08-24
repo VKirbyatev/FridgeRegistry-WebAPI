@@ -44,11 +44,16 @@ public class GetUserProductListQueryHandler : IRequestHandler<GetUserProductList
                 x => x.Product.Name.ToLower().Contains(searchString.ToLower()) && x.UserId == request.UserId
             );
         var totalPages = (totalUserProducts + request.Take - 1) / request.Take;
+        var pageNumber = request.Skip / request.Take + 1;
 
         return new PagedListDto<UserProductLookupDto>()
         {
-            TotalPages = totalPages,
             Items = result,
+            
+            TotalPages = totalPages,
+            PageNumber = pageNumber,
+            
+            PageSize = request.Take,
         };
     }
 

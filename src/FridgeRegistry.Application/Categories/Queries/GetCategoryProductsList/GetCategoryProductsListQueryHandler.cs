@@ -35,8 +35,10 @@ public class GetCategoryProductsListQueryHandler : IRequestHandler<GetCategoryPr
         var totalProducts = await GetCategoryProducts(category);
         
         var searchString = request.SearchString ?? string.Empty;
+        
         var totalProductsCount = totalProducts.Count(x => x.Name.ToLower().Contains(searchString.ToLower()));
         var totalPages = (totalProductsCount + request.Take - 1) / request.Take;
+        var pageNumber = request.Skip / request.Take + 1;
         
         var pagedProducts = totalProducts
             .Where(x => x.Name.ToLower().Contains(searchString.ToLower()) && x.IsDeleted == false)
@@ -46,8 +48,12 @@ public class GetCategoryProductsListQueryHandler : IRequestHandler<GetCategoryPr
 
         return new PagedListDto<ProductLookupDto>()
         {
+            Items = _mapper.Map<ICollection<ProductLookupDto>>(pagedProducts),
+                
             TotalPages = totalPages,
-            Items = _mapper.Map<ICollection<ProductLookupDto>>(pagedProducts)
+            PageNumber = pageNumber,
+            
+            PageSize = request.Take,
         };
     }
 

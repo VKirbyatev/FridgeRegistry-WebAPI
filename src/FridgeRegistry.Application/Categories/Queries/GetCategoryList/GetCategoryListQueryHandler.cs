@@ -32,11 +32,16 @@ public class GetCategoryListQueryHandler : IRequestHandler<GetCategoryListQuery,
 
         var totalCategories = _context.Categories.Count(x => x.Name.ToLower().Contains(searchString.ToLower()));
         var totalPages = (totalCategories + request.Take - 1) / request.Take;
+        var pageNumber = request.Skip / request.Take + 1;
 
         return new PagedListDto<CategoryLookupDto>()
         {
-            TotalPages = totalPages,
             Items = categories,
+            
+            TotalPages = totalPages,
+            PageNumber = pageNumber,
+            
+            PageSize = request.Take,
         };
     }
 }

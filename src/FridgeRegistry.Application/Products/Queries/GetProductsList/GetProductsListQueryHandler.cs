@@ -33,11 +33,16 @@ public class GetProductsListQueryHandler : IRequestHandler<GetProductsListQuery,
 
         var totalProducts = _dbContext.Categories.Count(x => x.Name.ToLower().Contains(searchString.ToLower()));
         var totalPages = (totalProducts + request.Take - 1) / request.Take;
+        var pageNumber = request.Skip / request.Take + 1;
 
         return new PagedListDto<ProductLookupDto>()
         {
-            TotalPages = totalPages,
             Items = products,
+            
+            TotalPages = totalPages,
+            PageNumber = pageNumber,
+            
+            PageSize = request.Take,
         };
     }
 }
