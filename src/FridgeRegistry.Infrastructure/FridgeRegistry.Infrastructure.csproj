@@ -6,6 +6,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\FridgeRegistry.Application\FridgeRegistry.Application.csproj" />
       <ProjectReference Include="..\FridgeRegistry.Domain\FridgeRegistry.Domain.csproj" />

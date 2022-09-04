@@ -1,0 +1,56 @@
+version: '3.4'
+
+services:
+  web_api:
+    image: web_api
+    build:
+      context: .
+      dockerfile: src/FridgeRegistry.WebAPI/Dockerfile
+    ports:
+      - 4000:80
+      - 4001:443
+    depends_on:
+      - pg_db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=443
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=fridge-registry
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ConnectionStrings__DbConnection=User ID=postgres;Password=root;Host=pg_db;Port=5432;Database=fridge_registry_db;Pooling=true;
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  identity:
+    image: identity
+    build:
+      context: .
+      dockerfile: src/FridgeRegistry.Identity/Dockerfile
+    ports:
+      - 3000:80
+      - 3001:443
+    depends_on:
+      - pg_db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=443
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=fridge-registry
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ConnectionStrings__DbConnection=User ID=postgres;Password=root;Host=pg_db;Port=5432;Database=fridge_registry_identity_db;Pooling=true;
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  pg_db:
+    image: postgres
+    container_name: 'postgres_database'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  pgdata:

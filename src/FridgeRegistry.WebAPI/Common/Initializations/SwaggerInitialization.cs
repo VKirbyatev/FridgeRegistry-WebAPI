@@ -5,7 +5,7 @@ namespace FridgeRegistry.WebAPI.Common.Initializations;
 
 public static class SwaggerInitialization
 {
-    public static IServiceCollection AddCustormSwagger(this IServiceCollection services)
+    public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>
         {

@@ -6,6 +6,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    </PropertyGroup>
+    
+
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="11.2.0" />
       <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.1" />

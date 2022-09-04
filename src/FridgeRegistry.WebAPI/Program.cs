@@ -2,8 +2,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 using FridgeRegistry.Application;
 using FridgeRegistry.Infrastructure;
+using FridgeRegistry.Infrastructure.Persistence;
 using FridgeRegistry.WebAPI.Common.Initializations;
 using FridgeRegistry.WebAPI.Middlewares.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddCustomCors();
-builder.Services.AddCustormSwagger();
+builder.Services.AddCustomSwagger();
 
 builder.Services
     .AddControllers()
@@ -21,6 +23,12 @@ builder.Services
     );
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<FridgeRegistryDbContext>();
+    await context.Database.MigrateAsync();
+}
 
 if (app.Environment.IsDevelopment())
 {

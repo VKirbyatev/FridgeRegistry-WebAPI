@@ -1,7 +1,9 @@
 using FridgeRegistry.Identity.Common.Initializations;
 using FridgeRegistry.Identity.Common.Middlewares;
+using FridgeRegistry.Identity.Data;
 using FridgeRegistry.Identity.Services.Identity;
 using FridgeRegistry.Identity.Services.Jwt;
+using Microsoft.EntityFrameworkCore;
 using static FridgeRegistry.Identity.Common.Initializations.RolesInitialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +26,12 @@ builder.Services.AddControllers(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<IdentityDatabaseContext>();
+    await context.Database.MigrateAsync();
+}
 
 // Middlewares && on application start static methods
 
