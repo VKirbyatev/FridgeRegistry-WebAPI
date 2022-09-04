@@ -5,12 +5,10 @@
 
 
 ## Description
----
 
 A simple **REST API** project to keep track of food in the fridge. Provides small functionality to make a tree of categories and add products to it. Then you can put products from the catalogue into your storehouse with comments and production date. The program will calculate the shelf life of the product and you don't have to keep everything in your head. 
 
 ## Usage
----
 
 Application has two ASP.NET web projects. First one contains core application business logic (```WebAPI```), and the second one contains authentication and authorization logic (```Identity```).
 
@@ -19,7 +17,6 @@ You can see their documentation by ```/swagger``` endpoint.
 All endpoints that return collections have pagination and a search string. The user's products can also be sorted by name or expiration date.
 
 ## Getting Started
----
 
 Firstly you should register or log-in as administrator via identity service (running at ```http//:3000``` or ```https//:3001``` ports by default)
 
