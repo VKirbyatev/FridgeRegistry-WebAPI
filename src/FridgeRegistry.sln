@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FridgeRegistry.WebAPI", "Fr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FridgeRegistry.Identity", "FridgeRegistry.Identity\FridgeRegistry.Identity.csproj", "{EF192A5C-EE4E-4C33-A8E8-7A017BD2608D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FridgeRegistry.Tests", "FridgeRegistry.Tests\FridgeRegistry.Tests.csproj", "{66E56B72-8786-4D89-B8C1-8F0ADF8FDE58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{EF192A5C-EE4E-4C33-A8E8-7A017BD2608D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF192A5C-EE4E-4C33-A8E8-7A017BD2608D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF192A5C-EE4E-4C33-A8E8-7A017BD2608D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E56B72-8786-4D89-B8C1-8F0ADF8FDE58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E56B72-8786-4D89-B8C1-8F0ADF8FDE58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E56B72-8786-4D89-B8C1-8F0ADF8FDE58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E56B72-8786-4D89-B8C1-8F0ADF8FDE58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

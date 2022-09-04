@@ -11,6 +11,9 @@ public static class RolesInitialization
         var adminUserConfiguration = new AdminUserConfiguration();
         configuration.Bind(nameof(AdminUserConfiguration), adminUserConfiguration);
         
+        var basicUserConfiguration = new BasicUserConfiguration();
+        configuration.Bind(nameof(BasicUserConfiguration), basicUserConfiguration);
+        
         var serviceScope = app.Services.CreateScope();
  
         var rolesManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -36,9 +39,18 @@ public static class RolesInitialization
                 Email = adminUserConfiguration.Email,
                 UserName = adminUserConfiguration.UserName,
             };
+            
+            var basicUser = new IdentityUser()
+            {
+                Email = basicUserConfiguration.Email,
+                UserName = basicUserConfiguration.UserName,
+            };
 
             await userManager.CreateAsync(admin, adminUserConfiguration.Password);
             await userManager.AddToRoleAsync(admin, Roles.Admin);
+            
+            await userManager.CreateAsync(basicUser, basicUserConfiguration.Password);
+            await userManager.AddToRoleAsync(basicUser, Roles.BasicUser);
         }
     }
 }

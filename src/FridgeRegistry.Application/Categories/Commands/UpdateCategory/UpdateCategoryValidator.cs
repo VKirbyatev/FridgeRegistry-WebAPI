@@ -11,7 +11,6 @@ public class UpdateCategoryValidator : AbstractValidator<UpdateCategoryCommand>
             .NotEqual(Guid.Empty);
         
         RuleFor(command => command.ParentCategoryId)
-            .NotEmpty()
             .NotEqual(Guid.Empty);
     }
 }
