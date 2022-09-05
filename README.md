@@ -66,6 +66,23 @@ docker-compose up --build -d
 3. Update the connection string according to your installed database
 4. Run ```dotnet run``` command in FridgeRegistry.WebAPI/FridgeRegistry.Identity directories.
 
+If you want to enable caching download redis from [official site](https://redis.io/docs/getting-started/installation/) or run it as a docker container using these commands:
+
+```sh
+docker network create -d bridge redisnet
+
+docker run -d -p 6379:6379 --name PAST_YOUR_NAME --network redisnet redis
+```
+
+Then configure ```appsettings.Development.json``` file at FridgeRegistry.WebAPI project as following:
+
+```json
+"RedisCacheConfiguration": {
+    //Change this from false to true:
+    "IsEnabled": true,
+    "ConnectionString": "localhost:6379"
+  }
+```
+
 ***Warnings***
 If you configured JWT secret, make sure that it is the same at WebAPI and Identity applications.
-   

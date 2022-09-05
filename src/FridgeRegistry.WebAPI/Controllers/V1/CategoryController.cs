@@ -8,6 +8,7 @@ using FridgeRegistry.Application.Categories.Queries.GetCategoryProductsList;
 using FridgeRegistry.Application.Contracts.Dto.Categories;
 using FridgeRegistry.Application.Contracts.Dto.Common;
 using FridgeRegistry.Application.Contracts.Dto.Products;
+using FridgeRegistry.WebAPI.Common.Attributes;
 using FridgeRegistry.WebAPI.Common.Constants;
 using FridgeRegistry.WebAPI.Contracts;
 using FridgeRegistry.WebAPI.Contracts.Requests.Category;
@@ -24,6 +25,7 @@ public class CategoryController : BaseController
     /// </summary>
     /// <response code="200">Return all categories in the app</response>
     [HttpGet(ApiRoutes.Category.GetList)]
+    [Cached(600)]
     public async Task<ActionResult<PagedListDto<CategoryLookupDto>>> GetList([FromQuery] PagingRequest request)
     {
         var query = new GetCategoryListQuery()
@@ -45,6 +47,7 @@ public class CategoryController : BaseController
     /// <response code="400">Unable to find products due to validation errors</response>
     /// <response code="404">Category with provided Id does not exists</response>
     [HttpGet(ApiRoutes.Category.GetProducts)]
+    [Cached(600)]
     public async Task<ActionResult<PagedListDto<ProductLookupDto>>> GetProducts(Guid id, [FromQuery] PagingRequest request)
     {
         var query = new GetCategoryProductsListQuery()

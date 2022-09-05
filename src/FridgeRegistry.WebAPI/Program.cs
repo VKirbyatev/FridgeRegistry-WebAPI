@@ -13,6 +13,8 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddCaching(builder.Configuration);
+
 builder.Services.AddCustomCors();
 builder.Services.AddCustomSwagger();
 
