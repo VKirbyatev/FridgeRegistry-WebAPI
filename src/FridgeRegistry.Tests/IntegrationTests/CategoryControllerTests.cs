@@ -4,7 +4,6 @@ using FluentAssertions;
 using FridgeRegistry.Application.Categories.Commands.CreateCategory;
 using FridgeRegistry.Application.Contracts.Dto.Categories;
 using FridgeRegistry.Application.Contracts.Dto.Common;
-using FridgeRegistry.Tests.IntegrationTests.Enums;
 using FridgeRegistry.WebAPI.Contracts;
 using FridgeRegistry.WebAPI.Contracts.Requests.Category;
 
@@ -25,7 +24,7 @@ public class CategoryControllerTests : IntegrationTest
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         
-        responseObject.Items.Should().BeEmpty();
+        responseObject!.Items.Should().BeEmpty();
         
         responseObject.TotalPages.Should().Be(0);
         responseObject.PageNumber.Should().Be(1);
@@ -39,14 +38,14 @@ public class CategoryControllerTests : IntegrationTest
         await AuthenticateAsync(client);
         await CreateCategory(client);
 
-        var pageSize = 10;
+        const int pageSize = 10;
 
         var response = await client.GetAsync($"{ApiRoutes.Category.GetList}?Take={pageSize}");
         var responseObject = await response.Content.ReadFromJsonAsync<PagedListDto<CategoryLookupDto>>();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        responseObject.Items.Count.Should().Be(1);
+        responseObject!.Items.Count.Should().Be(1);
         responseObject.TotalPages.Should().Be(1);
         responseObject.PageNumber.Should().Be(1);
         responseObject.PageSize.Should().Be(pageSize);
@@ -68,7 +67,7 @@ public class CategoryControllerTests : IntegrationTest
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        responseObject.Children.Should().BeEmpty();
+        responseObject!.Children.Should().BeEmpty();
         responseObject.Id.Should().Be(categoryId);
         responseObject.Name.Should().Be(categoryName);
         responseObject.ParentId.Should().Be(Guid.Empty);
@@ -80,7 +79,7 @@ public class CategoryControllerTests : IntegrationTest
         var client = CreateWebApiClient();
         await AuthenticateAsync(client);
         
-        const int GuidLength = 36;
+        const int guidLength = 36;
 
         var response = await client.PostAsJsonAsync(ApiRoutes.Category.Create, new CreateCategoryCommand()
         {
@@ -90,7 +89,7 @@ public class CategoryControllerTests : IntegrationTest
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         responseObject.Should().NotBeEmpty();
-        responseObject.Length.Should().Be(GuidLength);
+        responseObject.Length.Should().Be(guidLength);
     }
     
     [Test]

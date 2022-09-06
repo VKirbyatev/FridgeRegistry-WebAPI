@@ -1,18 +1,12 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using FridgeRegistry.Application.Contracts.Interfaces;
-using FridgeRegistry.Identity.Common.Initializations;
 using FridgeRegistry.Identity.Contracts;
 using FridgeRegistry.Identity.Contracts.Requests;
-using FridgeRegistry.Identity.Data;
 using FridgeRegistry.Identity.Models;
 using FridgeRegistry.Infrastructure.Persistence;
 using FridgeRegistry.Tests.IntegrationTests.Enums;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -21,16 +15,16 @@ namespace FridgeRegistry.Tests.IntegrationTests;
 
 public class IntegrationTest
 {
-    protected readonly HttpClient IdentityClient;
+    private readonly HttpClient _identityClient;
 
     protected IntegrationTest()
     {
         var identityAppFactory = new WebApplicationFactory<IdentityProgram>();
         
-        IdentityClient = identityAppFactory.CreateClient();
+        _identityClient = identityAppFactory.CreateClient();
     }
 
-    protected HttpClient CreateWebApiClient()
+    protected static HttpClient CreateWebApiClient()
     {
         var dbName = Guid.NewGuid().ToString();
         
@@ -47,7 +41,7 @@ public class IntegrationTest
                         {
                             options.UseInMemoryDatabase(dbName);
                         });
-                        services.AddScoped<IDbContext>(provider => provider.GetService<FridgeRegistryDbContext>());
+                        services.AddScoped<IDbContext>(provider => provider.GetService<FridgeRegistryDbContext>() ?? throw new InvalidOperationException());
                         services.AddEntityFrameworkInMemoryDatabase();
                     });
                 }
@@ -73,7 +67,7 @@ public class IntegrationTest
 
     private async Task<string> GetAdminJwtAsync()
     {
-        var response = await IdentityClient.PostAsJsonAsync(
+        var response = await _identityClient.PostAsJsonAsync(
             ApiRoutes.Identity.Login,
             new UserLoginRequest()
             {
@@ -84,12 +78,12 @@ public class IntegrationTest
 
         var registrationResponse = await response.Content.ReadFromJsonAsync<AuthenticationResult>();
 
-        return registrationResponse.AccessToken;
+        return registrationResponse!.AccessToken;
     }
     
     private async Task<string> GetBasicUserJwtAsync()
     {
-        var response = await IdentityClient.PostAsJsonAsync(
+        var response = await _identityClient.PostAsJsonAsync(
             ApiRoutes.Identity.Login,
             new UserLoginRequest()
             {
@@ -100,6 +94,6 @@ public class IntegrationTest
 
         var registrationResponse = await response.Content.ReadFromJsonAsync<AuthenticationResult>();
 
-        return registrationResponse.AccessToken;
+        return registrationResponse!.AccessToken;
     }
 }
