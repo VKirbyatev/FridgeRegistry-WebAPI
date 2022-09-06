@@ -16,7 +16,8 @@ public static class DependencyInjection
         {
             options.UseNpgsql(connectionString, builder => builder.MigrationsAssembly("FridgeRegistry.Infrastructure"));
         });
-        services.AddScoped<IDbContext>(provider => provider.GetService<FridgeRegistryDbContext>());
+        
+        services.AddScoped<IDbContext>(provider => provider.GetService<FridgeRegistryDbContext>() ?? throw new InvalidOperationException());
         services.AddAutoMapper(options =>
         {
             options.AddProfile(new DomainToDtoProfile());

@@ -18,8 +18,8 @@ public class UserProductController : BaseController
     /// <summary>
     /// Return all user's products
     /// </summary>
-    /// <param name="SortType">ASC (Ascending) or DESC (Descending) sort types</param>
-    /// <param name="SortBy">Available sorting methods: [ "Name", "Expiration_Date" ]</param>
+    /// <param name="request.SortType">ASC (Ascending) or DESC (Descending) sort types</param>
+    /// <param name="request.SortBy">Available sorting methods: [ "Name", "Expiration_Date" ]</param>
     /// <response code="200">Return all user's products</response>
     [HttpGet(ApiRoutes.UserProducts.GetList)]
     [Authorize]
@@ -69,7 +69,7 @@ public class UserProductController : BaseController
     /// <summary>
     /// Creates new product in user's collection
     /// </summary>
-    /// <param name="QuantityType">Enumeration type of quantity type. (E.g. Kilograms, Pounds, Items etc.)</param>
+    /// <param name="request.QuantityType">Enumeration type of quantity type. (E.g. Kilograms, Pounds, Items etc.)</param>
     /// <response code="200">Creates new product in user's collection</response>
     /// <response code="400">Unable to create new product due to validation errors</response>
     [HttpPost(ApiRoutes.UserProducts.Create)]
@@ -98,7 +98,7 @@ public class UserProductController : BaseController
     /// <summary>
     /// Updates product in user's collection
     /// </summary>
-    /// <param name="QuantityType">Enumeration type of quantity type. (E.g. Kilograms, Pounds, Items etc.)</param>
+    /// <param name="request.QuantityType">Enumeration type of quantity type. (E.g. Kilograms, Pounds, Items etc.)</param>
     /// <response code="200">Updates product in user's collection</response>
     /// <response code="400">Unable to update product due to validation errors</response>
     /// /// <response code="403">Forbidden action, only product's creator allowed to do that</response>

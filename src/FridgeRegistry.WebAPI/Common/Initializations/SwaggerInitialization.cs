@@ -33,7 +33,7 @@ public static class SwaggerInitialization
                 } 
             });
 
-            var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
+            var xmlFile = $"{Assembly.GetEntryAssembly()?.GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             
             options.IncludeXmlComments(xmlPath);

@@ -13,16 +13,7 @@ public class ShelfLifeFormatRule : IBusinessRule
     
     public bool IsBroken()
     {
-        try
-        {
-            TimeSpan.Parse(_shelfLife);
-
-            return false;
-        }
-        catch (Exception exception)
-        {
-            return true;
-        }
+        return !TimeSpan.TryParse(_shelfLife, out _);
     }
 
     public string Message => "Invalid ShelfLife time format";

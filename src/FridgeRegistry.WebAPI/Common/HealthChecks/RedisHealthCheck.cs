@@ -16,11 +16,11 @@ public class RedisHealthCheck : IHealthCheck
         _redisCacheConfiguration = redisCacheConfiguration;
     }
 
-    public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
+    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
     {
         if (!_redisCacheConfiguration.IsEnabled)
         {
-            return Task.FromResult(HealthCheckResult.Healthy());
+            return HealthCheckResult.Healthy();
         }
         
         try
@@ -34,11 +34,11 @@ public class RedisHealthCheck : IHealthCheck
             var database = connectionMultiplexer.GetDatabase();
             database.StringGet("health");
 
-            return Task.FromResult(HealthCheckResult.Healthy());
+            return HealthCheckResult.Healthy();
         }
         catch (Exception exception)
         {
-            return Task.FromResult(HealthCheckResult.Unhealthy(exception.Message));
+            return HealthCheckResult.Unhealthy(exception.Message);
         }
     }
 }

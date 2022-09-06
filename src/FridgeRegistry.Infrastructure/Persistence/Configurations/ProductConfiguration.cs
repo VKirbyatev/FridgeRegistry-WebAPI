@@ -11,5 +11,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.HasKey(product => product.Id);
         builder.HasIndex(product => product.Id).IsUnique();
         builder.OwnsOne(product => product.ShelfLife);
+
+        builder.HasIndex(product => product.Name).IsUnique();
     }
 }

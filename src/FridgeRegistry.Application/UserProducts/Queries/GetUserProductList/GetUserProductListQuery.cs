@@ -7,7 +7,7 @@ namespace FridgeRegistry.Application.UserProducts.Queries.GetUserProductList;
 
 public class GetUserProductListQuery : PagingQuery, IRequest<PagedListDto<UserProductLookupDto>>
 {
-    public string UserId { get; set; }
+    public string UserId { get; set; } = null!;
     
     public string? SortBy { get; set; }
     

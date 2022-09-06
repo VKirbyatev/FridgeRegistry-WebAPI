@@ -6,7 +6,7 @@ namespace FridgeRegistry.Application.UserProducts.Commands.UpdateUserProduct;
 public class UpdateUserProductCommand : IRequest
 {
     public Guid UserProductId { get; set; }
-    public string UserId { get; set; }
+    public string UserId { get; set; } = null!;
     
     public string? Commentary { get; set; }
     

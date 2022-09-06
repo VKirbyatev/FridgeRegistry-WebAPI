@@ -14,18 +14,23 @@ public class PostgresConnectionHealthCheck : IHealthCheck
 
     public PostgresConnectionHealthCheck(string connectionString, string testQuery = DefaultTestQuery)
     {
-        ConnectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new ArgumentNullException(nameof(connectionString));
+        }
+
+        ConnectionString = connectionString;
         TestQuery = testQuery;
     }
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default(CancellationToken))
     {
         await using (var connection = new NpgsqlConnection(ConnectionString))
-        {
+        
             try
             {
                 await connection.OpenAsync(cancellationToken);
-                
+            
                 var command = connection.CreateCommand();
                 command.CommandText = TestQuery;
 
@@ -35,7 +40,6 @@ public class PostgresConnectionHealthCheck : IHealthCheck
             {
                 return HealthCheckResult.Unhealthy(ex.Message);
             }
-        }
 
         return HealthCheckResult.Healthy();
     }

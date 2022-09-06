@@ -5,7 +5,7 @@ namespace FridgeRegistry.Application.UserProducts.Commands.CreateUserProduct;
 
 public class CreateUserProductCommand : IRequest<Guid>
 {
-    public string UserId { get; set; }
+    public string UserId { get; set; } = null!;
         
     public Guid ProductId { get; set; }
         

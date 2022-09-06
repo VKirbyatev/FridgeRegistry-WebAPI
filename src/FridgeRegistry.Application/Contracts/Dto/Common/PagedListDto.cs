@@ -2,7 +2,7 @@ namespace FridgeRegistry.Application.Contracts.Dto.Common;
 
 public class PagedListDto<T>
 {
-    public ICollection<T> Items { get; set; }
+    public ICollection<T> Items { get; set; } = null!;
     
     public int TotalPages { get; set; }
     public int PageNumber { get; set; }

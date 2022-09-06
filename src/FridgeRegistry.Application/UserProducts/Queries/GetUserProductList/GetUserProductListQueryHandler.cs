@@ -31,18 +31,15 @@ public class GetUserProductListQueryHandler : IRequestHandler<GetUserProductList
                 x => x.Product.Name.ToLower().Contains(searchString.ToLower()) && x.UserId == request.UserId
             );
 
-        userProducts = OrderUserProducts(userProducts, request.SortBy, request.SortType);    
+        userProducts = OrderUserProducts(userProducts, request.SortBy, request.SortType);
+        var totalUserProducts = userProducts.Count();
             
         var result = await userProducts
             .Skip(request.Skip)
             .Take(request.Take)
             .ProjectTo<UserProductLookupDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
-
-        var totalUserProducts = _dbContext.UserProducts
-            .Count(
-                x => x.Product.Name.ToLower().Contains(searchString.ToLower()) && x.UserId == request.UserId
-            );
+        
         var totalPages = (totalUserProducts + request.Take - 1) / request.Take;
         var pageNumber = request.Skip / request.Take + 1;
 
@@ -57,7 +54,7 @@ public class GetUserProductListQueryHandler : IRequestHandler<GetUserProductList
         };
     }
 
-    private IQueryable<UserProduct> OrderUserProducts(IQueryable<UserProduct> items, string? sortBy, string? sortType)
+    private static IQueryable<UserProduct> OrderUserProducts(IQueryable<UserProduct> items, string? sortBy, string? sortType)
     {
         sortType = sortType?.ToUpper();
         sortBy = sortBy?.ToUpper();

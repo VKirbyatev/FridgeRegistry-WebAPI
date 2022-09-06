@@ -16,7 +16,7 @@ public class GetUserProductListValidator : AbstractValidator<GetUserProductListQ
                 .NotEmpty()
                 .WithMessage("Both SortType and SortBy params should be provided");
             RuleFor(query => query.SortType)
-                .Must(sortType => sortType.ToUpper() == SortTypes.Asc || sortType.ToUpper() == SortTypes.Desc)
+                .Must(sortType => sortType!.ToUpper() == SortTypes.Asc || sortType!.ToUpper() == SortTypes.Desc)
                 .WithMessage("SortType should be equal to ASC or DESC");
         });
         
@@ -26,7 +26,7 @@ public class GetUserProductListValidator : AbstractValidator<GetUserProductListQ
                 .NotEmpty()
                 .WithMessage("Both SortType and SortBy params should be provided");
             RuleFor(query => query.SortBy)
-                .Must(sortBy => UserProductsSortMethods.AvailableSortMethods.Contains(sortBy.ToUpper()))
+                .Must(sortBy => UserProductsSortMethods.AvailableSortMethods.Contains(sortBy!.ToUpper()))
                 .WithMessage($"SortBy should be equal one of this statements: {string.Join(", ", UserProductsSortMethods.AvailableSortMethods)}");
         });
     }

@@ -7,9 +7,9 @@ namespace FridgeRegistry.Application.Contracts.Interfaces;
 
 public interface IDbContext
 {
-    DbSet<Product> Products { get; set; }
-    DbSet<Category> Categories { get; set; }
-    DbSet<UserProduct> UserProducts { get; set; }
+    DbSet<Product> Products { get; }
+    DbSet<Category> Categories { get; }
+    DbSet<UserProduct> UserProducts { get; }
 
     Task<int> SaveChangesAsync();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);

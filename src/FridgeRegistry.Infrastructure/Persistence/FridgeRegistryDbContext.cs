@@ -9,9 +9,9 @@ namespace FridgeRegistry.Infrastructure.Persistence;
 
 public class FridgeRegistryDbContext : DbContext, IDbContext
 {
-    public DbSet<Product> Products { get; set; }
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<UserProduct> UserProducts { get; set; }
+    public DbSet<Product> Products => Set<Product>();
+    public DbSet<Category> Categories => Set<Category>();
+    public DbSet<UserProduct> UserProducts => Set<UserProduct>();
 
     public FridgeRegistryDbContext(DbContextOptions<FridgeRegistryDbContext> options) : base(options) {}
 

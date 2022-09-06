@@ -5,8 +5,8 @@ namespace FridgeRegistry.Application.Contracts.Dto.UserProduct;
 public class UserProductLookupDto
 {
     public Guid Id { get; set; }
-    
-    public string ProductName { get; set; }
+
+    public string ProductName { get; set; } = null!;
     
     public float Quantity { get; set; }
     public QuantityType QuantityType { get; set; }

@@ -24,17 +24,13 @@ public class GetUserProductDescriptionQueryHandler : IRequestHandler<GetUserProd
         var userProduct = await _dbContext.UserProducts
             .Include(userProduct => userProduct.Product)
             .FirstOrDefaultAsync(
-                userProduct => userProduct.Id == request.UserProductId, cancellationToken
+                userProduct => userProduct.Id == request.UserProductId && userProduct.UserId == request.UserId,
+                cancellationToken
             );
 
         if (userProduct == null)
         {
             throw new NotFoundException(nameof(UserProduct), request.UserProductId);
-        }
-
-        if (userProduct.UserId != request.UserId)
-        {
-            throw new ForbiddenResourceException();
         }
 
         return _mapper.Map<UserProductDescriptionDto>(userProduct);
